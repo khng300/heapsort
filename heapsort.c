@@ -101,7 +101,8 @@ heap_pop(TYPE_T *base, size_t nelms, heapsort_cmp *cmp)
 	cur = 0;		/* Start with the index of the first element */
 	last = nelms - 1;
 
-	/* Swap the first element (max) with the last element */
+	/* Swap the first element (max) with the last element. After this step
+	 * the size of the heap will be reduced by one */
 	elm_swap(base + cur, base + last);
 
 	while (cur < last) {
@@ -117,10 +118,17 @@ heap_pop(TYPE_T *base, size_t nelms, heapsort_cmp *cmp)
 			/*
 			 * Both left child and right child exists
 			 */
+			
+			/* Compare the two children so that we know which
+			 * child is greater than the other */
 			child = cmp(base[left_child], base[right_child]) < 0
 			    ? (right_child) : (left_child);
 
 			if (cmp(base[cur], base[child]) < 0)
+				/* If the current node is smaller than the
+				 * greatest child, sift the current node down.
+				 * After sifting, the greatest child will become
+				 * the parent of the current node */
 				elm_swap(base + cur, base + child);
 			cur = child;
 		} else if (left_child < last) {
@@ -128,6 +136,8 @@ heap_pop(TYPE_T *base, size_t nelms, heapsort_cmp *cmp)
 			 * Only left child exists
 			 */
 			if (cmp(base[cur], base[left_child]) < 0)
+				/* In case the current node is smaller than the
+				 * left child, sift the current node down */
 				elm_swap(base + cur, base + last);
 			cur = left_child;
 		} else {
