@@ -145,29 +145,18 @@ heap_pop(TYPE_T *base, size_t nelms, heapsort_cmp *cmp)
 void
 heapsort_s(TYPE_T *base, size_t nelms, heapsort_cmp *cmp)
 {
-	TYPE_T *first;
-	TYPE_T *last;
-
-	/* Shortcut for situations that certainly do not need sorting */
-	if (nelms < 2)
-		return;
-
-	first = base;
-	last = base;
+	size_t i;
 
 	/*
 	 * Construct a heap with minimal size first (in this case the array
 	 * will be in its 
 	 */
-	while (last - first + 1 <= nelms) {
-		heap_push(base, last - first + 1, cmp);
-		last++;
-	}
+	for (i = 1; i <= nelms; i++)
+		heap_push(base, i, cmp);
 
 	/*
 	 * Destroy the heap so that everything will be sorted
 	 */
-	while (--last - first + 1 > 1) {
-		heap_pop(base, last - first + 1, cmp);
-	}
+	for (; --i > 0; i)
+		heap_pop(base, i, cmp);
 }

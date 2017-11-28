@@ -7,7 +7,7 @@
 #define offset_of(type, field) ((size_t)(&((type *)0)->field))
 #define node_of(ptr, type, field) ((type *)((char *)(ptr) - offset_of(type, field)))
 
-#define COUNT 200
+#define COUNT 300
 
 static int my_cmp(TYPE_T a, TYPE_T b) {
 	if (a < b)
